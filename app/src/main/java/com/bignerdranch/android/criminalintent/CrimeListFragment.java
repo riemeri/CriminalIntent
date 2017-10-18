@@ -2,7 +2,6 @@ package com.bignerdranch.android.criminalintent;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
-    private int lastPosition;
+    private int mlastPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class CrimeListFragment extends Fragment {
         }
         else {
             //mAdapter.notifyDataSetChanged();
-            mAdapter.notifyItemChanged(lastPosition);
+            mAdapter.notifyItemChanged(mlastPosition);
         }
 
     }
@@ -86,7 +84,8 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getID());
-            lastPosition = mCrime.getPosition();
+            //mlastPosition = mCrime.getPosition();
+            mlastPosition = getAdapterPosition();
             startActivity(intent);
         }
     }
