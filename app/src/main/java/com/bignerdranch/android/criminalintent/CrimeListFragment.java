@@ -49,8 +49,8 @@ public class CrimeListFragment extends Fragment {
         private TextView mDateTextView;
         private Crime mCrime;
 
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
+        public CrimeHolder(LayoutInflater inflater, ViewGroup parent, int layoutId) {
+            super(inflater.inflate(layoutId, parent, false));
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
@@ -69,14 +69,16 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    private class SeriousCrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class SeriousCrimeHolder extends CrimeHolder implements View.OnClickListener {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private Crime mCrime;
 
         public SeriousCrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_serious_crime, parent, false));
+            super(inflater, parent, R.layout.list_item_serious_crime);
+            //super(inflater.inflate(R.layout.list_item_serious_crime, parent, false));
+            //super(inflater.inflate(R.layout.list_item_serious_crime), parent, false);
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
@@ -108,7 +110,7 @@ public class CrimeListFragment extends Fragment {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
             if (viewType == 0) {
-                return new CrimeHolder(layoutInflater, parent);
+                return new CrimeHolder(layoutInflater, parent, R.layout.list_item_crime);
             }
             else {
                 return new SeriousCrimeHolder(layoutInflater, parent);
