@@ -45,17 +45,10 @@ public class CrimeLab {
     }
 
     public void deleteCrime(UUID id) {
-        /*for (Crime crime : mCrimes) {
-            if (crime.getID().equals(id)) {
-                mCrimes.remove(crime);
-            }
-        }*/
-
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getID().equals(id)) {
-                mCrimes.remove(i);
-            }
-        }
+        mDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + " = ?",
+                new String[] {id.toString()}
+        );
     }
 
     public List<Crime> getCrimes() {
