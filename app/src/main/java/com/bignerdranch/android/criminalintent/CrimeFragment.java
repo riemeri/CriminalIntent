@@ -189,7 +189,7 @@ public class CrimeFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-                DialogFragment imageFragment = ImageViewFragment.newInstance(0, mPhotoFile);
+                DialogFragment imageFragment = ImageViewFragment.newInstance(mPhotoFile);
                 imageFragment.show(ft, "dialog");
             }
         });
@@ -282,6 +282,8 @@ public class CrimeFragment extends Fragment {
         else{
             Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
+
+            mPhotoView.setBackgroundColor(getResources().getColor(R.color.colorTransparent));
         }
     }
 }

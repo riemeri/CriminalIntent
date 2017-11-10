@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.util.zip.Inflater;
 
 /**
  * Created by ianri on 11/9/2017.
@@ -23,13 +22,9 @@ public class ImageViewFragment extends DialogFragment {
     private ImageView mImageView;
     private File mPhotoFile;
 
-    public static ImageViewFragment newInstance(int num, File photoFile) {
+    public static ImageViewFragment newInstance(File photoFile) {
         ImageViewFragment ivf = new ImageViewFragment();
         ivf.mPhotoFile = photoFile;
-
-        Bundle args = new Bundle();
-        //args.putInt("num", num);
-        //ivf.setArguments(args);
 
         return ivf;
     }
@@ -45,34 +40,8 @@ public class ImageViewFragment extends DialogFragment {
         mImageView = (ImageView) v.findViewById(R.id.image_detail);
         updatePhotoView();
         return builder.create();
-
-        /*return new AlertDialog.Builder(getActivity())
-                .setPositiveButton(android.R.string.ok, null)
-                .create();*/
     }
 
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.image_view_dialog, container, false);
-
-        Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-        int width = bitmap.getWidth() - 100;
-        int height = bitmap.getHeight() - 400;
-
-        mImageView = (ImageView) v.findViewById(R.id.image_detail);
-        //mImageView.
-        updatePhotoView();
-
-
-        /*mImageView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-            }
-        });/
-
-        return v;
-    }*/
 
     private void updatePhotoView() {
 
@@ -87,14 +56,12 @@ public class ImageViewFragment extends DialogFragment {
             getActivity().getWindowManager().getDefaultDisplay().getSize(size);
 
             ViewGroup.LayoutParams params = mImageView.getLayoutParams();
-            //params.height = params.height * 2;
+
             double h = bitmap.getHeight();
             double w = bitmap.getWidth();
 
             double imgRatio = h / w;
 
-            //int fragmentWidth = params.width;
-            //int displayHeight = size.y;
 
             double height = (h / w) * (double) params.width;
 
