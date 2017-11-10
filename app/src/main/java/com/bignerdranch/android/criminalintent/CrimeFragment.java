@@ -75,11 +75,8 @@ public class CrimeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
-<<<<<<< HEAD
         mPhotoFile = CrimeLab.get(getActivity()).getPhotoFile(mCrime);
-=======
         setHasOptionsMenu(true);
->>>>>>> Ch-14-Challenge
 
     }
 
@@ -194,10 +191,11 @@ public class CrimeFragment extends Fragment {
         mPhotoView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                DialogFragment imageFragment = ImageViewFragment.newInstance(mPhotoFile);
-                imageFragment.show(ft, "dialog");
+                if (mPhotoFile != null && mPhotoFile.exists()) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    DialogFragment imageFragment = ImageViewFragment.newInstance(mPhotoFile);
+                    imageFragment.show(ft, "dialog");
+                }
             }
         });
 
