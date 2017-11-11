@@ -89,6 +89,25 @@ public class CrimeLab {
         }
     }
 
+    public Crime getLastOrNextCrime(Crime crime) {
+        List<Crime> crimes = getCrimes();
+
+        if (crimes.size() > 1) {
+            for (int i = 0; i < crimes.size(); i++) {
+                if (crimes.get(i).getID().compareTo(crime.getID()) == 0) {
+                    if (i == 0) {
+                        return crimes.get(1);
+                    }
+                    else {
+                        return crimes.get(i - 1);
+                    }
+                }
+            }
+        }
+
+        return crime;
+    }
+
     public File getPhotoFile(Crime crime) {
         File filesDir = mContext.getFilesDir();
         return new File(filesDir, crime.getPhotoFileName());

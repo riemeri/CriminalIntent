@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,20 @@ public class CrimeListFragment extends Fragment {
     private TextView mTextView;
     private Button mButton;
     private boolean mSubtitleVisible;
+    private Callbacks mCallBacks;
+
+    /**
+     * Required interface for hosting activities
+     */
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallBacks = (Callbacks) context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +74,7 @@ public class CrimeListFragment extends Fragment {
             }
         });
 
-        if (CrimeLab.get(getActivity()).getCrimes().size() <= 0) {
+        /*if (CrimeLab.get(getActivity()).getCrimes().size() <= 0) {
             mTextView.setVisibility(View.VISIBLE);
             mButton.setVisibility(View.VISIBLE);
             mCrimeRecyclerView.setVisibility(View.INVISIBLE);
@@ -68,8 +83,8 @@ public class CrimeListFragment extends Fragment {
             mTextView.setVisibility(View.INVISIBLE);
             mButton.setVisibility(View.INVISIBLE);
             mCrimeRecyclerView.setVisibility(View.VISIBLE);
-            updateUI();
-        }
+        }*/
+        updateUI();
 
         return view;
     }
@@ -94,6 +109,12 @@ public class CrimeListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallBacks = null;
     }
 
     @Override
@@ -128,8 +149,10 @@ public class CrimeListFragment extends Fragment {
     private void createNewCrime() {
         Crime crime = new Crime();
         CrimeLab.get(getActivity()).addCrime(crime);
-        Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getID());
-        startActivity(intent);
+        //Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getID());
+        //startActivity(intent);
+        updateUI();
+        mCallBacks.onCrimeSelected(crime);
     }
 
     private void updateSubtitle() {
@@ -145,7 +168,7 @@ public class CrimeListFragment extends Fragment {
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
-    private void updateUI() {
+    public void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
@@ -156,6 +179,17 @@ public class CrimeListFragment extends Fragment {
         else {
             mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
+        }
+
+        if (CrimeLab.get(getActivity()).getCrimes().size() <= 0) {
+            mTextView.setVisibility(View.VISIBLE);
+            mButton.setVisibility(View.VISIBLE);
+            mCrimeRecyclerView.setVisibility(View.INVISIBLE);
+        }
+        else {
+            mTextView.setVisibility(View.INVISIBLE);
+            mButton.setVisibility(View.INVISIBLE);
+            mCrimeRecyclerView.setVisibility(View.VISIBLE);
         }
 
         updateSubtitle();
@@ -187,8 +221,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getID());
-            startActivity(intent);
+            mCallBacks.onCrimeSelected(mCrime);
         }
     }
 
